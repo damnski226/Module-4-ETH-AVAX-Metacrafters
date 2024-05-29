@@ -1,25 +1,19 @@
 // SPDX-License-Identifier: MIT
-/*
-1. Minting new tokens: The platform should be able to create new tokens and distribute them to players as rewards. Only the owner can mint tokens.
-2. Transferring tokens: Players should be able to transfer their tokens to others.
-3. Redeeming tokens: Players should be able to redeem their tokens for items in the in-game store.
-4. Checking token balance: Players should be able to check their token balance at any time.
-5. Burning tokens: Anyone should be able to burn tokens, that they own, that are no longer needed.
-*/
+
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract DegenToken is ERC20, Ownable {
+contract AdamsKoppi is ERC20, Ownable {
 
-    mapping(uint256 => uint256) public ShopPrices;
+    mapping(uint256 => uint256) public CoffeePrices;
 
     constructor() ERC20("Degen", "DGN") Ownable(msg.sender) {
-        ShopPrices[1] = 100;
-        ShopPrices[2] = 60;
-        ShopPrices[3] = 30;
-        ShopPrices[4] = 10;
+        CoffeePrices[1] = 180;
+        CoffeePrices[2] = 160;
+        CoffeePrices[3] = 120;
+        CoffeePrices[4] = 100;
     }
 
 
@@ -33,16 +27,16 @@ contract DegenToken is ERC20, Ownable {
         transferFrom(msg.sender, _to, _amount);
     }
 
-    function showShopItems() external pure returns (string memory) {
-        string memory saleOptions = "The items on sale: {1} Degen NFT (100) {2} Degen T-shirt & Hoodie (60) {3} Random IN-GAME Item (30) {4} Degen Sticker (10)";
+    function showCoffeeItems() external pure returns (string memory) {
+        string memory saleOptions = "Iced Coffees on Sale: {1} Caramel Macchiato (180) {2} Frappucino (160) {3} Vanila Latte (120) {4} Coffee Fudge (100)";
         return saleOptions;
     }
 
     function redeemDGN(uint256 _item) public {
-        require(ShopPrices[_item] > 0, "Item is not available.");
+        require(CoffeePrices[_item] > 0, "Item is not available.");
         require(_item <= 4, "Item is not available.");
-        require(balanceOf(msg.sender) >= ShopPrices[_item], "Redeem Failed: Insufficient balance.");
-        transfer(owner(), ShopPrices[_item]);
+        require(balanceOf(msg.sender) >= CoffeePrices[_item], "Redeem Failed: Insufficient balance.");
+        transfer(owner(), CoffeePrices[_item]);
     }
     
     function burnDGN(uint256 _amount) public {
@@ -56,8 +50,9 @@ contract DegenToken is ERC20, Ownable {
     }
 
     function decimals() override public pure returns (uint8) {
-        return 0;
+        return 18;
     }
 
     
 }
+
