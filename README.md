@@ -16,7 +16,7 @@ DegenToken is a Solidity smart contract that implements a simple ERC20 token cal
 - **CoffeePrices:** Coffee items are priced in DGN tokens.
 
 ## Setup:
-1. Deploy the `DegenToken.sol` smart contract to the Ethereum blockchain.
+1. Deploy the `module4.sol` smart contract to the Ethereum blockchain.
 2. Configure the initial token distribution and Coffee item prices according to your requirements.
 3. Interact with the contract using Ethereum wallets or other smart contracts.
 
