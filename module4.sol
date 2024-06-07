@@ -1,19 +1,19 @@
 // SPDX-License-Identifier: MIT
-
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract AdamsKoppi is ERC20, Ownable {
+contract TekkenCharacters is ERC20, Ownable {
 
-    mapping(uint256 => uint256) public CoffeePrices;
+    mapping(uint256 => uint256) public TekkenCharacterItems;
+    mapping(address => uint256) public redeemedItems;
 
     constructor() ERC20("Degen", "DGN") Ownable(msg.sender) {
-        CoffeePrices[1] = 180;
-        CoffeePrices[2] = 160;
-        CoffeePrices[3] = 120;
-        CoffeePrices[4] = 100;
+        TekkenCharacterItems[1] = 3000;
+        TekkenCharacterItems[2] = 2000;
+        TekkenCharacterItems[3] = 800;
+        TekkenCharacterItems[4] = 500;
     }
 
 
@@ -27,16 +27,18 @@ contract AdamsKoppi is ERC20, Ownable {
         transferFrom(msg.sender, _to, _amount);
     }
 
-    function showCoffeeItems() external pure returns (string memory) {
-        string memory saleOptions = "Iced Coffees on Sale: {1} Caramel Macchiato (180) {2} Frappucino (160) {3} Vanila Latte (120) {4} Coffee Fudge (100)";
+    function showTekkenCharacterItems() external pure returns (string memory) {
+        string memory saleOptions = "The items on sale: {1} TekkenCharacterItems [AngelJin (3000)] {2} TekkenCharacterItems [TrueDevilKazuya (2000)] {3} TekkenCharacterItems [ Zafina (800)] {4} TekkenCharacterItems [ Lili (500)]";
         return saleOptions;
     }
 
-    function redeemDGN(uint256 _item) public {
-        require(CoffeePrices[_item] > 0, "Item is not available.");
+    function buyTekkenCharacterItem(uint256 _item, address _recipient) public {
+        require(TekkenCharacterItems[_item] > 0, "Item is not available.");
         require(_item <= 4, "Item is not available.");
-        require(balanceOf(msg.sender) >= CoffeePrices[_item], "Redeem Failed: Insufficient balance.");
-        transfer(owner(), CoffeePrices[_item]);
+        require(balanceOf(msg.sender) >= TekkenCharacterItems[_item], "Buy Failed: Insufficient balance.");
+        
+        redeemedItems[_recipient] = _item;
+        transfer(owner(), TekkenCharacterItems[_item]);
     }
     
     function burnDGN(uint256 _amount) public {
@@ -46,13 +48,11 @@ contract AdamsKoppi is ERC20, Ownable {
     }
 
     function getBalance() external view returns (uint256) {
-        return this.balanceOf(msg.sender);
+        return balanceOf(msg.sender);
     }
 
     function decimals() override public pure returns (uint8) {
-        return 18;
+        return 0;
     }
 
-    
 }
-
